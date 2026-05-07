@@ -1,0 +1,60 @@
+name: Backend Tests
+
+on:
+  push:
+    paths: ['backend/**']
+  pull_request:
+    paths: ['backend/**']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: alghani_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mbstring, redis
+
+      - name: Install dependencies
+        working-directory: backend
+        run: composer install --no-interaction --no-progress
+
+      - name: Copy env
+        working-directory: backend
+        run: cp .env.example .env
+
+      - name: Generate key
+        working-directory: backend
+        run: php artisan key:generate
+
+      - name: Run migrations
+        working-directory: backend
+        run: php artisan migrate --env=testing
+        env:
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: alghani_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: Run tests
+        working-directory: backend
+        run: php artisan test
+        env:
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: alghani_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
