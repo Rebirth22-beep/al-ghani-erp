@@ -18,6 +18,7 @@ class ProfitLossController extends Controller
 {
     public function index(ReportDateRangeRequest $request): JsonResponse
     {
+        $this->authorizeReportAccess();
 
         $from = $request->date('from')?->toDateString();
         $to   = $request->date('to')?->toDateString();

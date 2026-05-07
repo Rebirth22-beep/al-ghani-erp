@@ -6,7 +6,7 @@ export function PartnerTable({ data, loading, onDelete }) {
   const columns = [
     { key: 'name',           title: 'Name' },
     { key: 'phone',          title: 'Phone',    render: (v) => v || '—' },
-    { key: 'share_percent',  title: 'Share %',  render: (v) => v != null ? `${v}%` : '—' },
+    { key: 'share_percent',  title: 'Share %',  render: (v) => v !== null && v !== undefined ? `${v}%` : '—' },
     { key: 'balance_paisas', title: 'Balance',  render: (v) => <span className="font-medium">{formatCurrency(v)}</span> },
     {
       key: 'id',

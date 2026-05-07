@@ -1,7 +1,5 @@
 import { Badge } from '@/components/ui/Badge'
 import { AnimatedList } from '@/components/ui/AnimatedList'
-import { Link } from 'react-router-dom'
-import { ROUTES } from '@/constants/routes'
 
 export function StockAlertWidget({ alerts = [] }) {
   if (!alerts.length) {

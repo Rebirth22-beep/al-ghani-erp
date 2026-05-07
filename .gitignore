@@ -10,6 +10,7 @@ frontend/.env
 # Backend
 backend/vendor/
 backend/.env
+backend/.phpunit.result.cache
 backend/storage/logs/*.log
 backend/storage/framework/cache/*
 backend/storage/framework/sessions/*

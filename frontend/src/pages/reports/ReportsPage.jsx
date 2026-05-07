@@ -12,8 +12,6 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { exportTablePdf } from '@/utils/exportPdf'
 import { exportExcel } from '@/utils/exportExcel'
-import { formatCurrency } from '@/utils/formatCurrency'
-import { formatDate } from '@/utils/formatDate'
 
 const REPORT_TYPES = [
   { value: 'sales',    label: 'Sales Report' },

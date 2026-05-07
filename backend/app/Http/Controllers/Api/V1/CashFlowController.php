@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Reports\ReportDateRangeRequest;
 use App\Http\Resources\CashFlowLineResource;
 use App\Models\ChartOfAccount;
 use App\Models\JournalEntryLine;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Cash Flow = movements in/out of cash and bank accounts for a date range.
  * Filters journal lines whose chart_of_account is of type 'asset' AND name contains 'cash' or 'bank'.
  * (Future: tag accounts with a `cash_or_bank` flag for cleaner filtering.)
+ *
+ * Access (SKILL.md §9): Admin + Accountant only.
  */
 class CashFlowController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(ReportDateRangeRequest $request): JsonResponse
     {
-        $request->validate([
-            'from' => ['nullable', 'date'],
-            'to'   => ['nullable', 'date', 'after_or_equal:from'],
-        ]);
+        $this->authorizeReportAccess();
 
         $from = $request->date('from')?->toDateString();
         $to   = $request->date('to')?->toDateString();

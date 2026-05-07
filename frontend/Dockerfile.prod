@@ -1,0 +1,49 @@
+# ============================================================
+# Frontend production image — multi-stage:
+#   1. node-builder: install deps and run `npm run build`
+#   2. nginx-static: serve the static `dist/` output
+# ============================================================
+
+# ---------- Stage 1: build ----------
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+COPY . .
+# VITE_API_BASE_URL is read at build time; pass it via --build-arg if your
+# production frontend points at a non-default backend URL.
+ARG VITE_API_BASE_URL=/api/v1
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+RUN npm run build
+
+# ---------- Stage 2: serve ----------
+FROM nginx:1.25-alpine AS runner
+
+# Replace default nginx config with one that handles SPA routing (HTML5 history fallback)
+RUN cat > /etc/nginx/conf.d/default.conf <<'NGINX'
+server {
+    listen 80;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Cache static assets aggressively
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff2?)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # SPA fallback: any unknown route serves index.html so React Router can handle it
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+NGINX
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+EXPOSE 80

@@ -4,7 +4,7 @@ import { AppIcon } from '@/components/ui/AppIcon'
 import { SearchProductInput } from '@/components/forms/SearchProductInput'
 import { formatCurrency, toPaisas, toRupees } from '@/utils/formatCurrency'
 
-export function PurchaseReturnLineTable({ control, register, errors, setValue, watch }) {
+export function PurchaseReturnLineTable({ control, register, setValue, watch }) {
   const { fields, append, remove } = useFieldArray({ control, name: 'lines' })
 
   const addLine = () =>

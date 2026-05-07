@@ -32,7 +32,7 @@
  */
 
 import { motion } from 'motion/react'
-import { FADE_UP_VARIANT, EASE } from '@/utils/animations'
+import { EASE } from '@/utils/animations'
 
 const DIRECTIONS = {
   up:    { y: 16, x: 0 },
