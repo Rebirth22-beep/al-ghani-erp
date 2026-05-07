@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "en-US"
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  commit_status: true
+
+  auto_review:
+    enabled: true
+    drafts: true
+    auto_incremental_review: true
+    base_branches:
+      - "main"
+
+  path_filters:
+    - "!frontend/dist/**"
+    - "!frontend/node_modules/**"
+    - "!backend/vendor/**"
+    - "!backend/storage/**"
+
+  path_instructions:
+    - path: "backend/**"
+      instructions: |
+        Review Laravel code against SKILL.md. Keep controllers thin, keep workflow logic in Services, validate through Form Requests, serialize through Resources, centralize API responses, enforce Policies/Gates, and require audit logs for create/update/delete workflows.
+    - path: "frontend/**"
+      instructions: |
+        Review React code against SKILL.md. Keep API calls in frontend/src/services, reuse shared UI components/hooks/utilities, use Motion from motion/react, avoid framer-motion, keep animation presets in frontend/src/utils/animations.js, and keep code beginner-readable and DRY.
+    - path: "docs/**"
+      instructions: |
+        Check documentation for beginner-readable wording, accurate workflow rules, no duplicated guidance, and no secrets.
