@@ -93,8 +93,10 @@ Route::prefix('v1')->group(function () {
         Route::get('reports/worker',   [ReportController::class, 'worker']);
 
         // Users & Settings (Admin only)
-        Route::apiResource('users',    UserController::class);
-        Route::get('settings',         [SettingController::class, 'index']);
-        Route::put('settings',         [SettingController::class, 'update']);
+        Route::middleware('role:admin')->group(function () {
+            Route::apiResource('users', UserController::class);
+            Route::get('settings',      [SettingController::class, 'index']);
+            Route::put('settings',      [SettingController::class, 'update']);
+        });
     });
 });
