@@ -21,7 +21,7 @@ services:
 
   frontend:
     build:
-      context: ./docker/node
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: alghani_frontend
     restart: unless-stopped

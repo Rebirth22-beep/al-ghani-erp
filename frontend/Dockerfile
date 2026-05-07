@@ -1,5 +1,5 @@
 # ============================================================
-# Frontend dev image — Vite dev server with HMR.
+# Frontend dev image - Vite dev server with HMR.
 # Used by docker-compose.yml for local development.
 # ============================================================
 FROM node:20-alpine
