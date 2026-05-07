@@ -21,7 +21,7 @@ class GeneralLedgerController extends Controller
             ->when($filters['to'] ?? null, fn($q, $v) => $q->whereHas('entry', fn($q2) => $q2->whereDate('date', '<=', $v)))
             ->when($filters['account_id'] ?? null, fn($q, $v) => $q->where('chart_of_account_id', $v))
             ->orderBy('id')
-            ->paginate($request->integer('per_page', 50));
+            ->paginate($filters['per_page'] ?? 50);
 
         return $this->paginatedResponse($lines, GeneralLedgerLineResource::class);
     }
