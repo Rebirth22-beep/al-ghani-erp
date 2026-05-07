@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Party Ledger endpoint — returns the receivable/payable statement for one party.
+ * Party Ledger endpoint - returns the receivable/payable statement for one party.
  * All math goes through PartyLedgerService (sign convention applied there).
  */
 class PartyLedgerController extends Controller
