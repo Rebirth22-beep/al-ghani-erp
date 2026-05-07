@@ -82,7 +82,7 @@ Route::prefix('v1')->group(function () {
         Route::get('accounts/balance-sheet',  [BalanceSheetController::class, 'index']);
         Route::get('accounts/cash-flow',      [CashFlowController::class, 'index']);
 
-        // Journal Vouchers (manual ledger entries — must balance DR == CR)
+        // Journal Vouchers (manual ledger entries - must balance DR == CR)
         Route::apiResource('jv', JvController::class)->only(['index','show','store','destroy']);
 
         // Reports
@@ -93,8 +93,10 @@ Route::prefix('v1')->group(function () {
         Route::get('reports/worker',   [ReportController::class, 'worker']);
 
         // Users & Settings (Admin only)
-        Route::apiResource('users',    UserController::class);
-        Route::get('settings',         [SettingController::class, 'index']);
-        Route::put('settings',         [SettingController::class, 'update']);
+        Route::middleware('role:admin')->group(function () {
+            Route::apiResource('users', UserController::class);
+            Route::get('settings',      [SettingController::class, 'index']);
+            Route::put('settings',      [SettingController::class, 'update']);
+        });
     });
 });

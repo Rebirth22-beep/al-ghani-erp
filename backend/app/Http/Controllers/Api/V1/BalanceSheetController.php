@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Reports\BalanceSheetRequest;
 use App\Http\Resources\BalanceSheetResource;
 use App\Models\ChartOfAccount;
 use App\Models\JournalEntryLine;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -16,11 +16,10 @@ use Illuminate\Support\Facades\DB;
  */
 class BalanceSheetController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(BalanceSheetRequest $request): JsonResponse
     {
         $this->authorizeReportAccess();
 
-        $request->validate(['as_of' => ['nullable', 'date']]);
         $asOf = $request->date('as_of')?->toDateString() ?? now()->toDateString();
 
         $aggregates = JournalEntryLine::select(

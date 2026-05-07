@@ -1,5 +1,5 @@
 # ============================================================
-# Frontend production image — multi-stage:
+# Frontend production image - multi-stage:
 #   1. node-builder: install deps and run `npm run build`
 #   2. nginx-static: serve the static `dist/` output
 # ============================================================
